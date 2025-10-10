@@ -1,0 +1,17 @@
+.btn-custom{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    background-color: #9f93937c;
+    color: white;
+    border: 1px solid #fff3f3fc ;
+    border-radius: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    height: auto;
+}
+.btn-custom:hover{
+    background-color: #9f9393;
+}

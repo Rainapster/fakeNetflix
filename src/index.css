@@ -1,0 +1,11 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background-color: #141414
+}
+.root {
+  /* usa min-height così il layout può occupare tutta la viewport */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

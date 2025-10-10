@@ -1,0 +1,49 @@
+.customCard {
+  border: 1px solid black;
+  border-radius: 30px;
+  background-color: rgb(0, 0, 0);
+  margin: 10px;
+  padding: 10px;
+  width: 500px;
+  height: auto;
+  min-width: 300px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+  overflow: hidden;
+  text-decoration: none;
+}
+.textCard {
+  color: white;
+  font-weight: bold;
+
+  /* Multiline clamp (most browsers WebKit/Blink/Safari/Edge) */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* Fallback per browser senza supporto: mantiene altezza coerente */
+  line-height: 1.2;
+  max-height: 2.4em; /* 1.2 * 2 righe */
+  min-height: 65px;
+}
+.overwiew {
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+p {
+  color: white;
+}
+img {
+  object-fit: cover;
+  object-position: center;
+  height: 300px;
+  width: 300px;
+}
