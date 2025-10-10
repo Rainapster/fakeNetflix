@@ -1,5 +1,9 @@
 import { useParams } from "react-router-dom";
-import { useDetailMovie, useSimilarMovies, useVideoTrailer } from "../hooks/useMovies";
+import {
+  useDetailMovie,
+  useSimilarMovies,
+  useVideoTrailer,
+} from "../hooks/useMovies";
 import { useEffect } from "react";
 import "./movieDetail.css";
 import { useNavigate } from "react-router-dom";
@@ -20,13 +24,15 @@ const MovieDetail = () => {
   } = movieDetails ?? {}; // ?? = coaleshing operator, non è altro che è un or || più selettivo
 
   const { similar, retriveSimilarMovies } = useSimilarMovies(id as string);
-  const {retriveVideoTrailer, videoTrailer} = useVideoTrailer(id as string);
+  const { retriveVideoTrailer, videoTrailer } = useVideoTrailer(id as string);
 
-//   console.log('videoTrailer', videoTrailer);
-  const trailer = videoTrailer.find(video => video.type ==="Trailer" && video.site==="YouTube");
-//   console.log('trailer', trailer);
-  const trailerLink =`https://www.youtube.com/embed/${trailer?.key}?autoplay=1&mute=1&rel=0&controls=1`;
-//   console.log("trailerLink",trailerLink)
+  //   console.log('videoTrailer', videoTrailer);
+  const trailer = videoTrailer.find(
+    (video) => video.type === "Trailer" && video.site === "YouTube"
+  );
+  //   console.log('trailer', trailer);
+  const trailerLink = `https://www.youtube.com/embed/${trailer?.key}?autoplay=1&mute=1&rel=0&controls=1`;
+  //   console.log("trailerLink",trailerLink)
 
   useEffect(() => {
     retriveMovieDetail();
@@ -34,7 +40,7 @@ const MovieDetail = () => {
     retriveVideoTrailer();
   }, [retriveMovieDetail, retriveSimilarMovies, retriveVideoTrailer]);
 
-//   console.log("similarMovies are: ", similar);
+  //   console.log("similarMovies are: ", similar);
   //   console.log("movieDetails", movieDetails);
 
   const navigate = useNavigate();
@@ -47,9 +53,13 @@ const MovieDetail = () => {
       <div
         className="backgroundImg"
         style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/w780${backdrop_path})`,
+          backgroundImage:
+            !trailer && backdrop_path
+              ? `url(https://image.tmdb.org/t/p/w780${backdrop_path})`
+              : "",
         }}
       >
+        {trailer && <VideoPlayer src={trailerLink} />}
         <CustomButton
           style={{
             position: "absolute",
@@ -88,7 +98,6 @@ const MovieDetail = () => {
           title="Similar to the ones you looked at"
         />
       </div>
-      <VideoPlayer src={trailerLink}/>
     </>
   );
 };
