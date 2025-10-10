@@ -1,8 +1,9 @@
 import { videoPlayerProps } from "./videoPlayer.model";
 
-const VideoPlayer = ({src}:videoPlayerProps) => {
+const VideoPlayer = ({ src, className }: videoPlayerProps) => {
   return (
     <iframe
+      className={className}
       id="ytplayer"
       width="100%"
       style={{ height: "50vh", border: 0, display: "block" }}
@@ -12,4 +13,4 @@ const VideoPlayer = ({src}:videoPlayerProps) => {
   );
 };
 
-export default VideoPlayer
+export default VideoPlayer;

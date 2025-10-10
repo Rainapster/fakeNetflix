@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { MovieDetailRoot, MovieResponse, Root } from "./movies.model";
+import { CreditsRoot, MovieDetailRoot, MovieResponse, Root } from "./movies.model";
 
 const TMDB_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 const option = {
@@ -48,7 +48,7 @@ export const useDetailMovie = (id: string) => {
 
   return {movieDetails, retriveMovieDetail}
 };
-
+// GET SIMILAR MOVIE FROM MOVIE_ID
 export const useSimilarMovies = (movie_id : string) =>{
   const [similar, setSimilar] = useState <MovieResponse["results"]> ([])
   const retriveSimilarMovies = useCallback(()=>{
@@ -62,6 +62,7 @@ export const useSimilarMovies = (movie_id : string) =>{
   return {retriveSimilarMovies, similar}
 }
 
+//GET VIDEO TRAILER FROM MOVIE_ID
 export const useVideoTrailer = (movie_id : string) =>{
   const [videoTrailer, setVideoTrailer] = useState <Root["results"]>([])
 
@@ -76,4 +77,16 @@ export const useVideoTrailer = (movie_id : string) =>{
   return{retriveVideoTrailer, videoTrailer}
 }
 
-
+//GET THE ACTOR CAST ON MOVIE FROM MOVIE ID
+export const useCast = (movie_id :string) =>{
+  const [cast, setCast] = useState <CreditsRoot["cast"]>([])
+  const retriveCast = useCallback(()=>{
+    const fetchData = async() =>{
+      const result = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/credits`, option)
+      const data : CreditsRoot = await result.json()
+      setCast(data.cast)
+    }
+    fetchData()
+  },[movie_id])
+  return {cast, retriveCast}
+}

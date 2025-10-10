@@ -1,15 +1,17 @@
 import { useParams } from "react-router-dom";
 import {
+  useCast,
   useDetailMovie,
   useSimilarMovies,
   useVideoTrailer,
 } from "../hooks/useMovies";
-import { useEffect } from "react";
+import {useEffect } from "react";
 import "./movieDetail.css";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../components/button/CustomButton";
 import CardCarousel from "../components/cardCarousel/CardCarousel";
 import VideoPlayer from "../components/videoPlayer/VideoPlayer";
+import CardCast from "../components/cardCast/CardCast";
 
 const MovieDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,20 +27,22 @@ const MovieDetail = () => {
 
   const { similar, retriveSimilarMovies } = useSimilarMovies(id as string);
   const { retriveVideoTrailer, videoTrailer } = useVideoTrailer(id as string);
-
+  const {retriveCast, cast} = useCast(id as string)
+  console.log("cast", cast)
   //   console.log('videoTrailer', videoTrailer);
   const trailer = videoTrailer.find(
     (video) => video.type === "Trailer" && video.site === "YouTube"
   );
   //   console.log('trailer', trailer);
-  const trailerLink = `https://www.youtube.com/embed/${trailer?.key}?autoplay=1&mute=1&rel=0&controls=1`;
+  const trailerLink = `https://www.youtube.com/embed/${trailer?.key}?autoplay=1&mute=1&rel=0&controls=0&loop=1`;
   //   console.log("trailerLink",trailerLink)
 
   useEffect(() => {
     retriveMovieDetail();
     retriveSimilarMovies();
     retriveVideoTrailer();
-  }, [retriveMovieDetail, retriveSimilarMovies, retriveVideoTrailer]);
+    retriveCast();
+  }, [retriveCast, retriveMovieDetail, retriveSimilarMovies, retriveVideoTrailer]);
 
   //   console.log("similarMovies are: ", similar);
   //   console.log("movieDetails", movieDetails);
@@ -59,7 +63,9 @@ const MovieDetail = () => {
               : "",
         }}
       >
-        {trailer && <VideoPlayer src={trailerLink} />}
+        {trailer && (
+          <VideoPlayer className="backgroundVideo" src={trailerLink} />
+        )}
         <CustomButton
           style={{
             position: "absolute",
@@ -71,7 +77,7 @@ const MovieDetail = () => {
           onClick={handleClick}
         />
         <h2 className="page-title">Movie Detail</h2>
-        <div className="gradient"></div>
+        {!trailer && <div className="gradient"></div>}
       </div>
       <div className="details-container d-flex">
         <div className="title-text">
@@ -79,7 +85,6 @@ const MovieDetail = () => {
         </div>
         <div className="information-text">
           <p>Language: {original_language}</p>
-
           {production_companies?.map((company) => (
             <p key={company.id}>Production Company: {company.name}</p>
           ))}
@@ -87,6 +92,7 @@ const MovieDetail = () => {
             <p>Production Country: {countries.name}</p>
           ))}
         </div>
+        {cast.map(actor => <CardCast imgCard={`https://image.tmdb.org/t/p/w185${actor.profile_path} ?? `} name={actor.name}/>)}
       </div>
       <div className="description-movie">
         <p>{overview}</p>
@@ -101,5 +107,6 @@ const MovieDetail = () => {
     </>
   );
 };
+
 
 export default MovieDetail;
