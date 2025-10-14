@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import CustomButton from "../components/button/CustomButton";
 import CardCarousel from "../components/cardCarousel/CardCarousel";
 import VideoPlayer from "../components/videoPlayer/VideoPlayer";
-import CardCast from "../components/cardCast/CardCast";
+import CastCarousel from "../components/actorCarousel/CastCarousel";
 
 const MovieDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -92,11 +92,12 @@ const MovieDetail = () => {
             <p>Production Country: {countries.name}</p>
           ))}
         </div>
-        {cast.map(actor => <CardCast imgCard={`https://image.tmdb.org/t/p/w185${actor.profile_path} ?? `} name={actor.name}/>)}
       </div>
       <div className="description-movie">
         <p>{overview}</p>
       </div>
+
+      <CastCarousel cast={cast} title={"Cast"}/>
 
       <div className="container-similar-carousel">
         <CardCarousel

@@ -4,4 +4,8 @@
 .custom-scroll{
     padding: 16px 0;
     overflow-y: hidden;
+    overflow-x: scroll;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 }

@@ -5,8 +5,8 @@ import "./cardCarousel.css"
 const CardCarousel = ({ movies, title }: cardCaruoselProps) => {
   return (
     <div className="carousel-container">
-      <h1>{title}</h1>
-      <div className="d-flex overflow-scroll custom-scroll">
+      <h1 style={{color:"white", paddingLeft:"24px"}}>{title}</h1>
+      <div className="d-flex custom-scroll">
         {!movies.length
           ? "no movie found"
           : movies.map(

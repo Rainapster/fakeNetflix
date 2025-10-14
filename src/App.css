@@ -1,0 +1,15 @@
+::-webkit-scrollbar {
+  width: 8px;
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #111; /* o #000 per tutto nero */
+  border-radius: 4px;
+}
+
+/* Per Firefox */
+* {
+  scrollbar-color: #111 #000; /* thumb, track */
+  scrollbar-width: thin;
+}

@@ -4,3 +4,10 @@
 .text-white{
     color: white;
 }
+.background-img-navbar{
+    background-image: url('../../assets/Netflix-Logo-Streaming-Platform-765.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 150px;
+    height: 64px;
+}

@@ -1,0 +1,8 @@
+.notFound-background{
+    height: 100vh;
+    width: 100vw;
+    background-image: url('../../assets/original-603081b9349d9816570c9b1763c024b3.webp');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
