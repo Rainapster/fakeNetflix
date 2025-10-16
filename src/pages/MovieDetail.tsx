@@ -12,7 +12,7 @@ import CustomButton from "../components/button/CustomButton";
 import CardCarousel from "../components/cardCarousel/CardCarousel";
 import VideoPlayer from "../components/videoPlayer/VideoPlayer";
 import CastCarousel from "../components/actorCarousel/CastCarousel";
-import { useDetailSeries, useSimilarSeries } from "../hooks/useSeries";
+import { useCastSeries, useDetailSeries, useSimilarSeries } from "../hooks/useSeries";
 
 const MovieDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +39,9 @@ const MovieDetail = () => {
   const { similar, retriveSimilarMovies } = useSimilarMovies(id as string);
   const { retriveVideoTrailer, videoTrailer } = useVideoTrailer(id as string);
   const {retriveCast, cast} = useCast(id as string)
+  const {retriveCastSeries, credits} = useCastSeries (id as string)
   console.log("cast", cast)
+  console.log("cast serie", credits)
 
 const uniformateSimilarSeries = similarSeries.map((serie) => {
   return {
@@ -49,6 +51,8 @@ const uniformateSimilarSeries = similarSeries.map((serie) => {
     poster_path: serie.poster_path ?? ""
   };
 });
+
+// const uniformedCast = credits.map((cast)=> {cast.name =}})
 
   //   console.log('videoTrailer', videoTrailer);
   const trailer = videoTrailer.find(
@@ -60,6 +64,7 @@ const uniformateSimilarSeries = similarSeries.map((serie) => {
 
   useEffect(() => {
     if(isSerie){
+      retriveCastSeries();
       retriveDetailSeries();
       retriveSimilarSeries();
     }else{
@@ -128,7 +133,7 @@ const uniformateSimilarSeries = similarSeries.map((serie) => {
         <p>{overview}</p>
       </div>
 
-      <CastCarousel cast={cast} title={"Cast"}/>
+      <CastCarousel cast={isSerie? credits : cast} title={"Cast"}/>
 
       <div className="container-similar-carousel">
         <CardCarousel

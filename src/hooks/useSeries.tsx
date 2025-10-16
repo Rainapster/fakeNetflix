@@ -1,5 +1,10 @@
 import { useCallback, useState } from "react";
-import { RootSeries, RootSimilar, SeriesRoot } from "./series.models";
+import {
+  CastCrewRoot,
+  RootSeries,
+  RootSimilar,
+  SeriesRoot,
+} from "./series.models";
 
 const TMDB_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 const option = {
@@ -24,7 +29,7 @@ export const usePopularSeries = () => {
       setPopuplarSeries(data.results);
     };
     fetchData();
-  },[]);
+  }, []);
   return { popularSeries, retrivePopularSeries };
 };
 
@@ -41,19 +46,39 @@ export const useDetailSeries = (series_id: string) => {
     };
     fetchData();
   }, [series_id]);
-  return {detailSerie, retriveDetailSeries}
+  return { detailSerie, retriveDetailSeries };
 };
 
-export const useSimilarSeries = (series_id : string) =>{
-  const [similarSeries, setSimilarSeries] = useState <RootSimilar["results"]> ([])
-  const retriveSimilarSeries = useCallback(() =>{
-    const fetchData = async() =>{
-      const result = await fetch(`https://api.themoviedb.org/3/tv/${series_id}/similar?language=en-US&page=1`, option)
-      const data : RootSimilar = await result.json()
-      setSimilarSeries(data.results)
+export const useSimilarSeries = (series_id: string) => {
+  const [similarSeries, setSimilarSeries] = useState<RootSimilar["results"]>(
+    []
+  );
+  const retriveSimilarSeries = useCallback(() => {
+    const fetchData = async () => {
+      const result = await fetch(
+        `https://api.themoviedb.org/3/tv/${series_id}/similar?language=en-US&page=1`,
+        option
+      );
+      const data: RootSimilar = await result.json();
+      setSimilarSeries(data.results);
     };
-    fetchData()
-  },[series_id]);
-  return{retriveSimilarSeries, similarSeries}
-}
+    fetchData();
+  }, [series_id]);
+  return { retriveSimilarSeries, similarSeries };
+};
 
+export const useCastSeries = (series_id: string) => {
+  const [credits, setCredits] = useState<CastCrewRoot["cast"]>([]);
+  const retriveCastSeries = useCallback(() => {
+    const fetchData = async () => {
+      const result = await fetch(
+        `https://api.themoviedb.org/3/tv/${series_id}/credits?language=en-US`,
+        option
+      );
+      const data: CastCrewRoot = await result.json();
+      setCredits(data.cast);
+    };
+    fetchData();
+  }, [series_id]);
+  return { retriveCastSeries, credits };
+};
