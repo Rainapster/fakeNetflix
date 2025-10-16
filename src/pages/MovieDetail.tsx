@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   useCast,
   useDetailMovie,
@@ -12,18 +12,29 @@ import CustomButton from "../components/button/CustomButton";
 import CardCarousel from "../components/cardCarousel/CardCarousel";
 import VideoPlayer from "../components/videoPlayer/VideoPlayer";
 import CastCarousel from "../components/actorCarousel/CastCarousel";
+import { useDetailSeries } from "../hooks/useSeries";
 
 const MovieDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const { movieDetails, retriveMovieDetail } = useDetailMovie(id as string);
+
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const isSerie = queryParams.get("isSerie")
+
+  const {detailSerie, retriveDetailSeries} = useDetailSeries( id as string)
+  const {movieDetails, retriveMovieDetail } = useDetailMovie(id as string);
+  
+  const details = isSerie ? detailSerie : movieDetails;
+  const original_title = isSerie ? detailSerie?.original_name : movieDetails?.original_title;
   const {
-    original_title,
     original_language,
     overview,
     production_countries,
     production_companies,
     backdrop_path,
-  } = movieDetails ?? {}; // ?? = coaleshing operator, non è altro che è un or || più selettivo
+  } = details ?? {}; 
+
+  // ?? = coaleshing operator, non è altro che è un or || più selettivo
 
   const { similar, retriveSimilarMovies } = useSimilarMovies(id as string);
   const { retriveVideoTrailer, videoTrailer } = useVideoTrailer(id as string);
@@ -38,11 +49,15 @@ const MovieDetail = () => {
   //   console.log("trailerLink",trailerLink)
 
   useEffect(() => {
-    retriveMovieDetail();
-    retriveSimilarMovies();
-    retriveVideoTrailer();
-    retriveCast();
-  }, [retriveCast, retriveMovieDetail, retriveSimilarMovies, retriveVideoTrailer]);
+    if(isSerie){
+      retriveDetailSeries();
+    }else{
+      retriveMovieDetail();
+      retriveSimilarMovies();
+      retriveVideoTrailer();
+      retriveCast();
+    }
+  }, [isSerie, retriveCast, retriveDetailSeries, retriveMovieDetail, retriveSimilarMovies, retriveVideoTrailer]);
 
   //   console.log("similarMovies are: ", similar);
   //   console.log("movieDetails", movieDetails);
@@ -51,6 +66,9 @@ const MovieDetail = () => {
   const handleClick = () => {
     navigate(-1);
   };
+  console.log("location",location)
+  console.log("queryParams",queryParams)
+  console.log("isSerie",isSerie)
 
   return (
     <>

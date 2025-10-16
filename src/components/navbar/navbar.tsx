@@ -9,8 +9,8 @@ export const Navbar = () => (
   </button>
   <div className="collapse navbar-collapse" id="navbarNav">
     <ul className="navbar-nav">
-      <li className="nav-item active">
-        <NavLink className="nav-link" to = "/">Home </NavLink>
+      <li className="nav-item">
+        <NavLink className={({ isActive }: { isActive: boolean }) =>`nav-link ${isActive ? "text-red" : "text-white"}`} to = "/" end >Home </NavLink>
       </li>
       <li className="nav-item">
         <NavLink className={({isActive}: { isActive: boolean })  => `nav-link ${isActive ? "text-red" : "text-white"}`} to="/series">Series</NavLink>

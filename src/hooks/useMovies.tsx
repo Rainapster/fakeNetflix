@@ -90,3 +90,4 @@ export const useCast = (movie_id :string) =>{
   },[movie_id])
   return {cast, retriveCast}
 }
+

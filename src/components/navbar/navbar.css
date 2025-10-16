@@ -1,8 +1,8 @@
 .text-red{
-    color: red;
+    color: red !important;
 }
 .text-white{
-    color: white;
+    color: white !important;
 }
 .background-img-navbar{
     background-image: url('../../assets/Netflix-Logo-Streaming-Platform-765.png');

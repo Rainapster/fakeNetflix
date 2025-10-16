@@ -6,4 +6,5 @@ export interface cardMovieProps {
   poster_path: string;
   classname?: string;
   overview?: string;
+  customNavigationParams?: string;
 }

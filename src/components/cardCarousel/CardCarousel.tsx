@@ -2,7 +2,7 @@ import CardMovies from "../movies/CardMovies";
 import { cardCaruoselProps } from "./cardCarousel.model";
 import "./cardCarousel.css"
 
-const CardCarousel = ({ movies, title }: cardCaruoselProps) => {
+const CardCarousel = ({ movies, title, customNavigationParams }: cardCaruoselProps) => {
   return (
     <div className="carousel-container">
       <h1 style={{color:"white", paddingLeft:"24px"}}>{title}</h1>
@@ -18,7 +18,8 @@ const CardCarousel = ({ movies, title }: cardCaruoselProps) => {
                 poster_path,
               }) => {
                 return (
-                  <CardMovies
+                  <CardMovies 
+                    customNavigationParams={customNavigationParams}
                     classname="customCard mx-2"
                     key={id}
                     id={id as number}
