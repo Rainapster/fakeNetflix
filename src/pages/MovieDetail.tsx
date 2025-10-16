@@ -12,7 +12,7 @@ import CustomButton from "../components/button/CustomButton";
 import CardCarousel from "../components/cardCarousel/CardCarousel";
 import VideoPlayer from "../components/videoPlayer/VideoPlayer";
 import CastCarousel from "../components/actorCarousel/CastCarousel";
-import { useDetailSeries } from "../hooks/useSeries";
+import { useDetailSeries, useSimilarSeries } from "../hooks/useSeries";
 
 const MovieDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,11 +35,21 @@ const MovieDetail = () => {
   } = details ?? {}; 
 
   // ?? = coaleshing operator, non è altro che è un or || più selettivo
-
+  const {similarSeries, retriveSimilarSeries} = useSimilarSeries(id as string)
   const { similar, retriveSimilarMovies } = useSimilarMovies(id as string);
   const { retriveVideoTrailer, videoTrailer } = useVideoTrailer(id as string);
   const {retriveCast, cast} = useCast(id as string)
   console.log("cast", cast)
+
+const uniformateSimilarSeries = similarSeries.map((serie) => {
+  return {
+    ...serie,
+    title: serie.name,
+    release_date: serie.first_air_date,
+    poster_path: serie.poster_path ?? ""
+  };
+});
+
   //   console.log('videoTrailer', videoTrailer);
   const trailer = videoTrailer.find(
     (video) => video.type === "Trailer" && video.site === "YouTube"
@@ -51,13 +61,14 @@ const MovieDetail = () => {
   useEffect(() => {
     if(isSerie){
       retriveDetailSeries();
+      retriveSimilarSeries();
     }else{
       retriveMovieDetail();
       retriveSimilarMovies();
       retriveVideoTrailer();
       retriveCast();
     }
-  }, [isSerie, retriveCast, retriveDetailSeries, retriveMovieDetail, retriveSimilarMovies, retriveVideoTrailer]);
+  }, [isSerie, retriveCast, retriveDetailSeries, retriveMovieDetail, retriveSimilarMovies, retriveSimilarSeries, retriveVideoTrailer]);
 
   //   console.log("similarMovies are: ", similar);
   //   console.log("movieDetails", movieDetails);
@@ -66,9 +77,11 @@ const MovieDetail = () => {
   const handleClick = () => {
     navigate(-1);
   };
+
   console.log("location",location)
   console.log("queryParams",queryParams)
   console.log("isSerie",isSerie)
+  console.log("similarSerie", uniformateSimilarSeries)
 
   return (
     <>
@@ -119,13 +132,12 @@ const MovieDetail = () => {
 
       <div className="container-similar-carousel">
         <CardCarousel
-          movies={similar}
+          movies={isSerie ? uniformateSimilarSeries : similar}
           title="Similar to the ones you looked at"
         />
       </div>
     </>
   );
 };
-
 
 export default MovieDetail;
