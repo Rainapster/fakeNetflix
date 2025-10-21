@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { CreditsRoot, MovieDetailRoot, MovieResponse, Root } from "./movies.model";
+import { CreditsRoot, MovieDetailRoot, MovieResponse, Root, Movie, GenreRootMovie } from "./movies.model";
 
 const TMDB_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 const option = {
@@ -91,3 +91,34 @@ export const useCast = (movie_id :string) =>{
   return {cast, retriveCast}
 }
 
+export const useGenre = () =>{
+  const [genres, setGenre] = useState<GenreRootMovie["genres"]>([])
+  const retriveGenres = useCallback(()=>{
+    const fetchData = async () =>{
+      const result = await fetch(`https://api.themoviedb.org/3/genre/movie/list?language=en`, option)
+      const data : GenreRootMovie = await result.json()
+      setGenre(data.genres)
+    }
+    fetchData()
+  },[])
+  return{retriveGenres, genres}
+}
+
+
+export const useMoviesByGenre = (genreIds : string[]) =>{
+  const [moviesByGenre, setMoviesByGenre] = useState <{ [genreId: string]: Movie[] }>({})
+
+  const retriveMoviesByGenre = useCallback(() =>{
+    const fetchData = async ()=>{
+      const fetchMoviesByGenre : { [genreId: string]: Movie[] } = {}
+      for(const genreId of genreIds){
+        const result = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}`, option)
+        const data : MovieResponse = await result.json()
+        fetchMoviesByGenre[genreId] = data.results
+      }
+      setMoviesByGenre(fetchMoviesByGenre);
+    }
+    fetchData();
+  },[genreIds])
+  return { moviesByGenre, retriveMoviesByGenre };
+}

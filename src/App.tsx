@@ -18,7 +18,6 @@ function App() {
           <Route path="movies" element={<Movies />} />
           <Route path="series" element={<Series />} />
           <Route path="detail/:id" element={<MovieDetail />} />
-          {/* <Route path="datailSerie/:id" element ={} */}
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

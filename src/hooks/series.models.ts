@@ -3,7 +3,7 @@ export interface SeriesRoot {
   results: Result[]
   total_pages: number
   total_results: number
-}
+} 
 
 export interface Result {
   backdrop_path?: string
@@ -182,3 +182,12 @@ export interface Crew {
   department: string
   job: string
 } 
+//genres 
+export interface GenreRoot {
+  genres: Genre[]
+}
+
+export interface Genre {
+  id: number
+  name: string
+}

@@ -125,3 +125,12 @@ export interface Crew {
   department: string
   job: string
 }
+//genre
+export interface GenreRootMovie {
+  genres: Genre[]
+}
+
+export interface GenreMovie {
+  id: number
+  name: string
+}
