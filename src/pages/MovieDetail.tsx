@@ -13,6 +13,11 @@ import CardCarousel from "../components/cardCarousel/CardCarousel";
 import VideoPlayer from "../components/videoPlayer/VideoPlayer";
 import CastCarousel from "../components/actorCarousel/CastCarousel";
 import { useCastSeries, useDetailSeries, useSimilarSeries } from "../hooks/useSeries";
+import { useDispatch, useSelector } from "react-redux";
+import { favoriteSelector } from "../store/favoriteSelectors";
+import { addToFavorite, removeFromFavorite } from "../store/favoritesSlice";
+import { movieToFavorite, seriesToFavorite } from "../models/favorite.model";
+import IconButton from "../components/iconButton/IconButton";
 
 const MovieDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -73,7 +78,7 @@ const uniformateSimilarSeries = similarSeries.map((serie) => {
       retriveVideoTrailer();
       retriveCast();
     }
-  }, [isSerie, retriveCast, retriveDetailSeries, retriveMovieDetail, retriveSimilarMovies, retriveSimilarSeries, retriveVideoTrailer]);
+  }, [isSerie, retriveCast, retriveCastSeries, retriveDetailSeries, retriveMovieDetail, retriveSimilarMovies, retriveSimilarSeries, retriveVideoTrailer]);
 
   //   console.log("similarMovies are: ", similar);
   //   console.log("movieDetails", movieDetails);
@@ -87,6 +92,30 @@ const uniformateSimilarSeries = similarSeries.map((serie) => {
   console.log("queryParams",queryParams)
   console.log("isSerie",isSerie)
   console.log("similarSerie", uniformateSimilarSeries)
+
+  // Store
+  const idNum = Number(id)
+  const dispatch = useDispatch();
+  const favorites = useSelector(favoriteSelector)
+  const isFavorited = favorites.some(
+    (f) => f.id === idNum && f.mediaType === (isSerie ? "series" : "movie")
+  );
+  const handleToggleFavorite = () =>{
+    if(isFavorited){
+      const favorite = favorites.find((fav)=>fav.id === idNum && fav.mediaType === (isSerie ? "series" : "movie") )
+      if(favorite) dispatch(removeFromFavorite(favorite))
+        return
+    }
+        if (isSerie) {
+      if (!detailSerie) return;
+      dispatch(addToFavorite(seriesToFavorite(detailSerie)));
+    } else {
+      if (!movieDetails) return;
+      dispatch(addToFavorite(movieToFavorite(movieDetails)));
+    }
+  }
+  console.log("isFavorited", isFavorited)
+  console.log("favorites",favorites)
 
   return (
     <>
@@ -112,6 +141,19 @@ const uniformateSimilarSeries = similarSeries.map((serie) => {
           }}
           onClick={handleClick}
         />
+
+        <IconButton
+          isFavorite= {isFavorited}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 3,
+            margin: "8px 24px",
+          }}
+          onClick={handleToggleFavorite}
+        />
+
         <h2 className="page-title">Movie Detail</h2>
         {!trailer && <div className="gradient"></div>}
       </div>

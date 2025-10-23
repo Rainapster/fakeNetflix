@@ -18,6 +18,9 @@ export const Navbar = () => (
       <li className="nav-item">
         <NavLink className={({ isActive}: { isActive: boolean }) => `nav-link ${isActive ? "text-red" : "text-white"}`} to="/movies">Movies</NavLink>
       </li>
+      <li className="nav-item">
+        <NavLink className={({ isActive}: { isActive: boolean }) => `nav-link ${isActive ? "text-red" : "text-white"}`} to="/favorites">Favorites</NavLink>
+      </li>
 
     </ul>
   </div>

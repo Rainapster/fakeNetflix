@@ -1,5 +1,5 @@
 import { Movie } from "../hooks/movies.model";
-import { Result } from "../hooks/series.models";
+import { Result, RootSeries } from "../hooks/series.models";
 
 export interface Favorite{
     id: number;
@@ -28,7 +28,7 @@ export const movieToFavorite = (m: Movie): Favorite => ({
   original_language: m.original_language ?? null,
 });
 
-export const seriesToFavorite = (s: Result): Favorite => ({
+export const seriesToFavorite = (s: Result | RootSeries): Favorite => ({
   id: s.id,
   mediaType: "series",
   title: s.name ?? s.original_name ?? "",

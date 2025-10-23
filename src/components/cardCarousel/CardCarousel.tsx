@@ -24,9 +24,9 @@ const CardCarousel = ({ movies, title, customNavigationParams }: cardCaruoselPro
                     key={id}
                     id={id as number}
                     title={title}
-                    release_date={release_date}
-                    vote_average={vote_average}
-                    poster_path={poster_path}
+                    release_date={release_date ?? ""}
+                    vote_average={vote_average ?? 0}
+                    poster_path={poster_path ?? ""}
                   />
                 );
               }

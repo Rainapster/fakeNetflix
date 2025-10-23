@@ -8,7 +8,7 @@ export const Layout = () => {
   const isDetailPage = location.pathname.startsWith("/detail")
   return (
     <div className="d-flex flex-column">
-      <Navbar />ù
+      <Navbar />
       {!isDetailPage && <Hero/>}
       <Outlet />
       <Footer />
